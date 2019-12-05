@@ -33,7 +33,7 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
+cnodjs/node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -60,3 +60,11 @@ typings/
 # next.js build output
 .next
 yarn.lock
+.idea/.gitignore
+.idea/NodeJsCrawlerDemo.iml
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/saveactions_settings.xml
+.idea/vcs.xml
+*/node_modules/
