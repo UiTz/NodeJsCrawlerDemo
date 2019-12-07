@@ -8,7 +8,7 @@
   let page = 0;
   let pageCount = 0;
 
-  function getPageData (page, url) {
+  function getPageData(page, url) {
     return new Promise(async (resolve, reject) => {
       const result = {
         page,
@@ -25,7 +25,7 @@
         console.log(`第${page}页爬取失败`);
         reject(err);
       }
-      if ( data.status === 200 ) {
+      if (data.status === 200) {
         // res.send(data)
         const $ = cheerio.load(data.text, { decodeEntities: false });
         console.log(`获取第${page}页数据成功，准备爬取页面数据...`);
@@ -67,8 +67,8 @@
       const plist = [];
       console.log("开始创建进程");
 
-      for (let index = 1; index <= 20; index ++) {
-        let p = getPageData(index, app.url);
+      for (let index = 1; index <= 10; index++) {
+        let p = await getPageData(index, app.url);
         plist.push(p);
       }
       const dataList = [];

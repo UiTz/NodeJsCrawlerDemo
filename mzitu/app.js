@@ -4,6 +4,6 @@ const app = express();
 require("./routes/index")(app);
 
 
-app.listen("8081", () => {
+app.listen("80", () => {
   console.log("http://localhost:8081/");
 });
