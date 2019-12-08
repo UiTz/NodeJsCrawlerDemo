@@ -1,6 +1,6 @@
 "use strict";
 !function () {
-  const { getInfo, getDetails, saveImg, createImgList, getIp } = require("../api/index");
+  const { getInfo, getDetails, saveImg, createImgList, getIp, sleep } = require("../api/index");
   const cheerio = require("cheerio");
 
   module.exports = app => {
@@ -9,8 +9,9 @@
      */
     app.get("/", async (req, res) => {
       let page = typeof req.query.page === "undefined" ? 1 : Number(req.query.page);
-      let endPage = typeof req.query.endPage === "undefined" ? page + 1 : Number(req.query.endPage)+1;
-      let type = req.query.type ? req.query.type : ""
+      let endPage = typeof req.query.endPage === "undefined" ? page + 1 : Number(req.query.endPage);
+      let type = req.query.type ? req.query.type : "";
+      let waitSeconds = 15;
       const dataList = [];
 
       let p = new Promise(async (resolve, reject) => {
@@ -18,7 +19,7 @@
           // console.log(page);
           let data, $;
           try {
-            data = await getInfo(page,type);
+            data = await getInfo(page, type);
             $ = cheerio.load(data.text);
           } catch (e) {
             res.send("主页请求错误");
@@ -43,7 +44,7 @@
           for await (let item of indexList) {
             let data = await createImgList(item.id, item.title);
             for await (let item of data.imgUrl) {
-              await saveImg(item, `img/清纯妹子/${page}/${data.title}`);
+              await saveImg(item, `性感妹子/${page}/${data.title}`);
             }
             console.log(`《${item.title}》————${data.totalPage}张图片下载完毕`);
           }
@@ -54,10 +55,13 @@
             page,
             indexList
           });
-          console.log("所有图片保存完成");
-        }
-        if ( page === endPage ) {
-          resolve();
+          if ( page === endPage ) {
+            console.log(`第${page}页所有文章图片保存完成，任务结束。`);
+            resolve();
+          } else {
+            await sleep(waitSeconds);
+            console.log(`第${page}页所有文章图片保存完成，等待${waitSeconds}S后继续进行`);
+          }
         }
       });
 

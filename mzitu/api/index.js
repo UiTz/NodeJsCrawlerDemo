@@ -11,6 +11,17 @@ const header = {
   "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
 };
 
+/**
+ * 休眠等待，防止请求量过大被限制
+ * @param seconds
+ * @returns {Promise<unknown>}
+ */
+function sleep (seconds) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, seconds * 1000);
+  });
+}
+
 //检测文件或者文件夹存在 nodeJS
 function fsExistsSync (path) {
   try {
@@ -32,12 +43,13 @@ function updateHeader (referer) {
 /**
  * 从主页获取信息
  * @param page
+ * @param type
  * @returns {Promise<unknown>}
  */
 function getInfo (page, type = "") {
   return new Promise(async (resolve, reject) => {
     let res;
-    let url = baseUrl+ (type !== "" ? type + "/" : type) + "page/" + page;
+    let url = baseUrl + (type !== "" ? type + "/" : type) + "page/" + page;
     // console.log(url);
     try {
       // console.log(url);
@@ -205,4 +217,4 @@ function getIp (ip) {
   });
 }
 
-module.exports = { getInfo, getDetails, saveImg, createImgList, getIp };
+module.exports = { getInfo, getDetails, saveImg, createImgList, getIp, sleep };
